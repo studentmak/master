@@ -1,0 +1,317 @@
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        let cartwin = document.querySelector('.t706__cartwin-products')
+        let presents = document.querySelectorAll(".t-img-select__control")
+        
+        let notDiscountProducts_HAPPY_SAM10 = [                                 // товары не участвующие в акции по промокоду HAPPY and SAM10
+        { name: '3 пиццы за 1199 р', uid: "786303298821" },
+        { uid: "203478690911", name: 'Сет Суйка' },
+        { uid: "427999443271", name: 'Сет Темпура' },
+        { uid: "483787194311", name: 'Сет Сан' },
+        { uid: "438408819881", name: 'Сет Тсуки' },
+        { uid: "300391749731", name: 'Сет Микс' },
+        { uid: "174898053541", name: 'Сет Сити' },
+        { uid: "506421757121", name: 'Сет Хати' },
+        { uid: "633472347731", name: 'Сет Шкет' },
+        { uid: "277028709131", name: 'Сет Хиросима' },
+        { uid: "983963045151", name: 'Сет Дзю' },
+        { uid: "929724558041", name: 'Сет Нагасаки' },
+        { uid: "554900297931", name: 'Сет Три пары' },
+        { uid: "611103841881", name: 'Сет Спайси' },
+        { uid: "642221296681", name: 'Сет Панда' },
+        { uid: "214032350641", name: 'Сет Наката' },
+        { uid: "509452595641", name: 'Сет Наруто' },
+        { uid: "609394734411", name: 'Сет Сакура' },
+        { uid: "303326541761", name: 'Сет Тидори' },
+        { uid: "242881855621", name: 'Сет Всё включено' },
+        { uid: "949700777481", name: 'Сет Вонзай' },
+        { uid: "527314311591", name: 'Сет Секрет' },
+        { uid: "313662869571", name: 'Сет Биг Босс' },
+        { uid: "798914915761", name: 'Сет Своя компания' },
+        { uid: "340288746571", name: 'Сет Три Сезона' },
+        { uid: "229135726461", name: 'Сет Филамания' },
+        { uid: "431978642631", name: 'Сет Классика' },
+        { uid: "755753185381", name: 'Сет Вова' },
+        { uid: "378752582761", name: 'Сет Сукияма' },
+        { uid: "556491428471", name: 'Сет Трио' },
+        { uid: "901275179671", name: 'Сет Торгаш' },
+        { uid: "833264326381", name: 'Сет Клава' },
+        { uid: "324001923461", name: 'Сет Окинава' },
+        { uid: "958516965481", name: 'Сет Шире-хари' },
+        { uid: "310792316821", name: 'Сет Дурман' },
+        { uid: "870342670591", name: 'Сет Саке' },
+        { uid: "751905687831", name: 'Сет Дабуру' },
+        { uid: "688737352721", name: 'Сет Рассвет' },
+        { uid: "694913861071", name: 'Сет Куяси' },
+        { uid: "127839624491", name: 'Сет Сушин сын' },
+        { uid: "263116852721", name: 'Сет Самурай' },
+        { uid: "409539016141", name: 'Сет Пикачу' },
+        { uid: "804472205061", name: 'Сет Катана' },
+        { uid: "153546922911", name: 'Сет Хит' },
+        { uid: "822527813731", name: 'Сет Харакири' },
+        { uid: "346427084291", name: 'Сет Папаша' },
+        { uid: "334825731491", name: 'Сет Тайм' },
+        { uid: "486816148741", name: 'Сет Валера' },
+        { uid: "299227033931", name: 'Сет Пол седьмого' },
+        { uid: "860666824621", name: 'Сет Ши' },
+        { uid: "201564393871", name: 'Сет Харакири' },
+        ]
+        
+        let discountProducts_HOT10 = []
+    
+        
+        let handler = {
+            set(target, prop, value){
+                target[prop] = value
+                if(prop === 'total'){
+                    loader()
+                    return true
+                } else{
+                    return false
+                }
+            }
+        }
+        
+        let observer = new MutationObserver(mutationRecords => {
+            if (typeof tcart !== "undefined"){
+                loader()
+            }
+        })
+
+        observer.observe(cartwin, {
+            childList: true, 
+            subtree: true, 
+        })
+        
+        function startProxy(){
+            if (typeof tcart === "undefined"){
+                setTimeout(() => {
+                    startProxy()
+                }, 100)
+            } else {
+                tcart = new Proxy(tcart, handler)
+            }
+        }
+        startProxy()
+        
+        async function loader(){// обработчик
+            visibility_banners()
+              if(tcart.promocode){
+                await calculationDiscount()
+              }
+        }
+
+        
+
+        function CheckingShare_1 (x, y){  // фильтрация товаров по принадлежности к акции
+            let forPromotion = tcart.products.filter(i => !x.map(i2 => i2.uid).includes(i.uid))
+            let notForPromotion = tcart.products.filter(i => y.map(i2 => i2.uid).includes(i.uid))
+            return {forPromotion, notForPromotion}
+        } 
+        
+        function CheckingShare_2 (x, y){  // фильтрация товаров по принадлежности к акции
+            let forPromotion = tcart.products.filter(i => x.map(i2 => i2.uid).includes(i.uid))
+            let notForPromotion = tcart.products.filter(i => !y.map(i2 => i2.uid).includes(i.uid))
+            return {forPromotion, notForPromotion}
+        }  
+
+        async function applied_promocode (){
+            if (cartwin.promocode.promocode.toUpperCase() === "HAPPY" || "SAM10"){
+                await CheckingShare_1(notDiscountProducts_HAPPY_SAM10, notDiscountProducts_HAPPY_SAM10)
+            } else if(cartwin.promocode.promocode.toUpperCase() === "HOT10"){
+                await CheckingShare_2(discountProducts_HOT10, discountProducts_HOT10)
+            }
+        }
+
+        async function calculationDiscount(){
+            let result = await applied_promocode() 
+            let discountpercent = tcart.promocode.discountpercent
+
+            let resultSum_forPromition = result.forPromotion.map(i => i.amount).reduce((sum, current) => sum + current, 0)
+            let resultSum_notForPromotion = result.notForPromotion.map(i => i.amount).reduce((sum, current) => sum + current, 0)
+
+            let discount = +resultSum_forPromition * (+discountpercent / 100)
+
+            let total_cost = +resultSum_notForPromotion + (+resultSum_forPromition - discount)
+            
+            tcart.amount = total_cost
+            tcart.prodamount_discountsum = discount
+            tcart.prodamount_withdiscount = total_cost <= 500 ? total_cost + tcart.delivery.price : total_cost
+
+            tcart__reDrawTotal();
+            visibility_banners();
+        }
+        
+        
+    let arr_presents_amount_1200 = [
+        "Сырные палочки", "Стрипсы", "Кольца кальмара",
+    ].map(i => i.replace(/\s+/g, '_').toUpperCase())
+    
+    let arr_presents_amount_1500 = [
+        "Пепси 1л", "Миринда 1л", "7-up 1л",
+    ].map(i => i.replace(/\s+/g, '_').toUpperCase())
+    
+    let arr_presents_amount_2000 = [
+        "Запеченный с мидиями", "Запеченная Калифорния", "Цыпленок с грибами",
+    ].map(i => i.replace(/\s+/g, '_').toUpperCase())
+    
+    
+    
+    function add_class(){
+        for(i=0; i<presents.length; i++){
+            let id
+            let input_value = presents[i].querySelector("input").value.replace(/\s+/g, '_').toUpperCase()
+    
+            if(arr_presents_amount_1200.includes(input_value)){
+                id = "presents_amount_1200"
+            } else if (arr_presents_amount_1500.includes(input_value)){
+                id = "presents_amount_1500"
+            } else if (arr_presents_amount_2000.includes(input_value)){
+                id = "presents_amount_2000"
+            } else {
+                id = 0
+            }
+            presents[i].classList.add(id)
+        }
+    }
+    
+    let presents_amount_1200 = document.querySelectorAll(".presents_amount_1200")
+    let presents_amount_1500 = document.querySelectorAll(".presents_amount_1500")
+    let presents_amount_2000 = document.querySelectorAll(".presents_amount_2000")
+    
+    function add_banner(){
+        let presents_amount_1200 = document.querySelectorAll(".presents_amount_1200")
+        let presents_amount_1500 = document.querySelectorAll(".presents_amount_1500")
+        let presents_amount_2000 = document.querySelectorAll(".presents_amount_2000")
+    
+        for(i=0; i<presents_amount_1200.length; i++){
+            let banner_amount_1200 = document.createElement("div")
+            banner_amount_1200.setAttribute("class", "banner_amount_1200")
+            banner_amount_1200.innerHTML = `Доступно от 1200р`
+            presents_amount_1200[i].appendChild(banner_amount_1200)
+        }
+    
+        for(i=0; i<presents_amount_1500.length; i++){
+            let banner_amount_1500 = document.createElement("div")
+            banner_amount_1500.setAttribute("class", "banner_amount_1500")
+            banner_amount_1500.innerHTML = `Доступно от 1500р`
+            presents_amount_1500[i].appendChild(banner_amount_1500)
+        }
+    
+        for(i=0; i<presents_amount_2000.length; i++){
+            let banner_amount_2000 = document.createElement("div")
+            banner_amount_2000.setAttribute("class", "banner_amount_2000")
+            banner_amount_2000.innerHTML = `Доступно от 2000р`
+            presents_amount_2000[i].appendChild(banner_amount_2000)
+        }
+    }
+    
+    function visibility_banners(){
+        function visibility_banner(elementsClass, el_Class_Banner, visibility) {
+            let elements = document.querySelectorAll(elementsClass)
+            for(i=0; i<elements.length; i++){
+                elements[i].style.pointerEvents = (visibility === true) ? "none" : "all"
+                if(visibility === true){
+                    elements[i].querySelector('input').checked = false
+                }
+                elements[i].querySelector(el_Class_Banner).style.visibility = (visibility === true) ? "visible" : "hidden"
+            }
+        }
+        visibility_banner(".presents_amount_1200", ".banner_amount_1200", (tcart.amount >= 1200) ? false : true)
+        visibility_banner(".presents_amount_1500", ".banner_amount_1500", (tcart.amount >= 1500) ? false : true)
+        visibility_banner(".presents_amount_2000", ".banner_amount_2000", (tcart.amount >= 2000) ? false : true)
+    }
+    add_class()
+    add_banner()
+    visibility_banners()
+    
+    });
+    
+</script>
+<style>
+.t-img-select__container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.t-img-select__control {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.t-img-select__control > div {
+    border-radius: 8px;
+}
+
+.banner_amount_1200 {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    background-color: #1d1d1d57;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    color: #fffbfb;
+    font-size: 18px;
+    text-align: center;
+    font-family: 'TildaSans';
+    animation: 2s neon-2 alternate-reverse infinite;
+    font-weight: 900;
+}
+
+.banner_amount_1500 {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    background-color: #1d1d1d57;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    color: #fffbfb;
+    font-size: 18px;
+    text-align: center;
+    font-family: 'TildaSans';
+    animation: 2s neon-2 alternate-reverse infinite;
+    font-weight: 900;
+}
+
+.banner_amount_2000 {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    background-color: #1d1d1d57;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    color: #fffbfb;
+    font-size: 18px;
+    text-align: center;
+    font-family: 'TildaSans';
+    animation: 2s neon-2 alternate-reverse infinite;
+    font-weight: 900;
+}
+
+.t-img-select__text.t-text.t-text_xs {
+    font-weight: 400;
+}
+
+@keyframes neon-2 {
+    from {
+        text-shadow: 0 0 5px #FFF,
+        0 0 10px #FFF,
+        0 0 15px #FFF,
+        0 0 20px #BFE2FF;
+    }
+    to {
+        text-shadow: 0 0 20px #BFE2FF,
+        0 0 20px #BFE2FF,
+        0 0 30px #BFE2FF,
+        0 0 45px #BFE2FF,
+        0 0 100px #BFE2FF,
+        0 0 300px #BFE2FF,
+    }
+}    
+</style>
