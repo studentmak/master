@@ -4,7 +4,7 @@
         let cartwin = document.querySelector('.t706__cartwin-products')
         let presents = document.querySelectorAll(".t-img-select__control")
         
-        let notDiscountProducts_HAPPY_SAM10 = [                                 // товары не участвующие в акции по промокоду HAPPY and SAM10
+        let notDiscount = [                                 // товары не участвующие в акции
         { name: '3 пиццы за 1199 р', uid: "786303298821" },
         { uid: "203478690911", name: 'Сет Суйка' },
         { uid: "427999443271", name: 'Сет Темпура' },
@@ -58,7 +58,7 @@
         { uid: "201564393871", name: 'Сет Харакири' },
         ]
         
-        let discountProducts_HOT10 = []
+        
     
         
         let handler = {
@@ -104,28 +104,14 @@
 
         
 
-        function CheckingShare_1 (x, y){  // фильтрация товаров по принадлежности к акции
-            let forPromotion = tcart.products.filter(i => !x.map(i2 => i2.uid).includes(i.uid))
-            let notForPromotion = tcart.products.filter(i => y.map(i2 => i2.uid).includes(i.uid))
+        function CheckingShare (){  // фильтрация товаров по принадлежности к акции
+            let forPromotion = tcart.products.filter(i => !notDiscount.map(i2 => i2.uid).includes(i.uid))
+            let notForPromotion = tcart.products.filter(i => notDiscount.map(i2 => i2.uid).includes(i.uid))
             return {forPromotion, notForPromotion}
         } 
-        
-        function CheckingShare_2 (x, y){  // фильтрация товаров по принадлежности к акции
-            let forPromotion = tcart.products.filter(i => x.map(i2 => i2.uid).includes(i.uid))
-            let notForPromotion = tcart.products.filter(i => !y.map(i2 => i2.uid).includes(i.uid))
-            return {forPromotion, notForPromotion}
-        }  
-
-        async function applied_promocode (){
-            if (cartwin.promocode.promocode.toUpperCase() === "HAPPY" || "SAM10"){
-                await CheckingShare_1(notDiscountProducts_HAPPY_SAM10, notDiscountProducts_HAPPY_SAM10)
-            } else if(cartwin.promocode.promocode.toUpperCase() === "HOT10"){
-                await CheckingShare_2(discountProducts_HOT10, discountProducts_HOT10)
-            }
-        }
 
         async function calculationDiscount(){
-            let result = await applied_promocode() 
+            let result = await CheckingShare() 
             let discountpercent = tcart.promocode.discountpercent
 
             let resultSum_forPromition = result.forPromotion.map(i => i.amount).reduce((sum, current) => sum + current, 0)
