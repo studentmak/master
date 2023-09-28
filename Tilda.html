@@ -4,7 +4,7 @@
         let cartwin = document.querySelector('.t706__cartwin-products')
         let presents = document.querySelectorAll(".t-img-select__control")
         
-        let notDiscount = [                                 // товары не участвующие в акции
+        let notDiscountProducts_HAPPY_SAM10 = [                                 // товары не участвующие в акции по промокоду HAPPY and SAM10
         { name: '3 пиццы за 1199 р', uid: "786303298821" },
         { uid: "203478690911", name: 'Сет Суйка' },
         { uid: "427999443271", name: 'Сет Темпура' },
@@ -59,7 +59,14 @@
         ]
         
         
-    
+        let goodsSnacks = [{"uid":"765336520941","id":"02c4d076-7fe6-4e9a-9c09-43fff3da8b51","name":"Мидии Гигант"},{"uid":"175010870781","id":"031d1017-8470-495a-ba22-32254c4cba42","name":"Эби темпура"},{"uid":"438000540061","id":"a0e45cb6-59bf-40b1-a607-228bde160598","name":"Мидии Гигант острые"},{"uid":"957015944991","id":"34c486b0-f9eb-4fc7-9a6c-6514b5cb2d3c","name":"Куриные Наггетсы"},{"uid":"987898188691","id":"4375b726-84e2-4f5a-aa0c-d7e335b36368","name":"Тори пицца"},{"uid":"117057618651","id":"06ba40a7-dcde-4ad7-8380-0b37a1a8638b","name":"Сырные палочки"},{"uid":"397508308821","id":"b6b5631f-bd49-4689-9342-3a39830de59d","name":"Картофель Фри"},{"uid":"165878149301","id":"6ef11c62-a931-415f-b4a5-2aac4c69b829","name":"Картофель Айдахо"},{"uid":"817166087151","id":"bf7af001-cd5f-4ebf-be5c-89950832e6fc","name":"Кольца кальмара"},{"uid":"986702136011","id":"84ef7161-f6cf-4a4b-add9-d8b86599988b","name":"Картофельный микс"},{"uid":"861482447721","id":"ddf6c7d1-f818-42c3-ae9f-f69106d4be3d","name":"Стрипсы"}]
+        let goodsHot_dishes = [{"uid":"264878972761","id":"302b0b54-c88f-42c2-8538-032262086365","name":"Оякодон с курицей"},{"uid":"572668510811","id":"b10dfc05-badd-4121-8b2e-68f6d4c414d3","name":"Wok с креветкой"},{"uid":"163778116401","id":"b10dfc05-badd-4121-8b2e-68f6d4c414d3","name":"Wok с креветкой / Рис- Рис"},{"uid":"970288402551","id":"f5f4ccb6-4562-41a4-a619-d43ef0ee0f84","name":"Wok с креветкой / Лапша- Лапша"},{"uid":"240393638661","id":"9ae4dff6-8146-4edd-97a6-6f0ef198649f","name":"Wok с курицей и беконом"},{"uid":"651967824141","id":"9ae4dff6-8146-4edd-97a6-6f0ef198649f","name":"Wok с курицей и беконом / Рис- Рис"},{"uid":"734540564321","id":"0c235ba6-7dad-4c14-9991-172fc240c2ac","name":"Wok с курицей и беконом / Лапша- Лапша"},{"uid":"792618410161","id":"769a83f6-cd3b-4fef-bb93-68b9ecf9f576","name":"Wok с курицей"},{"uid":"462571239661","id":"57df6d70-66ee-439e-8bd2-e3d442873c2e","name":"Wok с курицей / Рис- Рис"},{"uid":"766832999391","id":"769a83f6-cd3b-4fef-bb93-68b9ecf9f576","name":"Wok с курицей / Лапша- Лапша"},{"uid":"289342172271","id":"e87779bf-7226-4152-9cc2-400eb5424e4b","name":"Wok с овощами"},{"uid":"636334967461","id":"e87779bf-7226-4152-9cc2-400eb5424e4b","name":"Wok с овощами / Рис- Рис"},{"uid":"502415072861","id":"97e50851-842c-4efd-a15b-06da42aaaf49","name":"Wok с овощами / Лапша- Лапша"},{"uid":"588813442161","id":"5df6a523-12b7-4552-bbbe-666833b7b6bd","name":"Паста сливочная"},{"uid":"496502998101","id":"fa1c0e4b-b3b1-43a1-946f-ea56dd1a4613","name":"Тепан с курицей"},{"uid":"385167142951","id":"ef0190e9-3d81-4c47-a17d-6d9a831abda1","name":"Соба с курицей"},{"uid":"769401924211","id":"bcb97bc9-0baf-4a6b-b487-def5e134bf75","name":"Сладкая курица"},{"uid":"989860201261","id":"cf426226-da32-40a7-aaa5-f46706819abc","name":"Паста Карбонара"}]
+        let goodsDesserts = [{"uid":"272400350671","id":"82a1a78c-ac64-4575-bf24-b47657f631e6","name":"Минари клубника"},{"uid":"708102540711","id":"c1e0cae2-74fb-4cac-9248-4b9e030874e2","name":"Чизкейк Нью-Йорк"},{"uid":"967475349081","id":"8aa43e70-6e1c-4142-9a04-aad0ebbcd8c1","name":"Шоко Микс"},{"uid":"109204948981","id":"d7f216d2-43d4-4d7f-8f4c-17bb71a4e13c","name":"Чизкейк шоколадный"},{"uid":"719421266771","id":"db459c5f-3dc1-4834-9afc-44f4ea1c71ce","name":"Торт Захер"},{"uid":"285383299971","id":"82518174-38cb-41cd-b4f8-739151419461","name":"Морковный торт"},{"uid":"178314137251","id":"887ed5da-6cbb-436c-97dd-261fc2b63b10","name":"Малиновая тарталетка"}]
+        let goodsDrinks = [{"uid":"319818706371","id":"3b798a4a-e727-43b4-ae69-8e436dbc08a5","name":"Пепси"},{"uid":"412651517161","id":"3b798a4a-e727-43b4-ae69-8e436dbc08a5","name":"Пепси / 0,5- 0,5"},{"uid":"186897845761","id":"2b41bb64-fb08-456b-bb2f-be865fcc05f2","name":"Пепси / 1- 1"},{"uid":"453034878841","id":"9ead59c8-5c94-4370-8a33-7592a4193ff5","name":"Миринда"},{"uid":"158942395871","id":"9ead59c8-5c94-4370-8a33-7592a4193ff5","name":"Миринда / 0,5- 0,5"},{"uid":"506668447791","id":"d8e60c98-5f49-4115-abc1-ae12dfc021d9","name":"Миринда / 1- 1"},{"uid":"437989319351","id":"9e058951-a490-4009-a6c7-4696e240bc26","name":"7-up"},{"uid":"611984318031","id":"9e058951-a490-4009-a6c7-4696e240bc26","name":"7-up / 0,5- 0,5"},{"uid":"670436655091","id":"1d3ee893-131b-42d5-a6ce-2051c7f46b0c","name":"7-up / 1- 1"},{"uid":"191363417801","id":"af8b82c9-c409-4317-876e-bd33a8a7fc31","name":"Липтон"},{"uid":"641816282441","id":"6mEr9GoeICeSngsAdedU","name":"Липтон / 0,5- 0,5"},{"uid":"927621406661","id":"f7ed729f-7943-49be-8fe1-a48883b46bb5","name":"Аква Минерале без газа"},{"uid":"252909477391","id":"S6R4jn4yz6jvA3irYtaL","name":"Аква Минерале без газа / 0,5- 0,5"},{"uid":"399433903021","id":"71c91a38-d7b5-4333-b7b4-24455b27a107","name":"Актив Малина"},{"uid":"833955474571","id":"0RjS1bKUPZK7SKxe2Zvf","name":"Актив Малина / 0,5- 0,5"}]
+        let goodsSalads = [{"uid":"380768892571","id":"e99b0e66-e806-487e-aa36-0b9aef4417fd","name":"Цезарь с курицей"},{"uid":"552377858101","id":"da2d0ed6-42cc-4948-bacd-25fd11f3a685","name":"Цезарь с лососем"},{"uid":"408430576511","id":"a3f21539-4d23-4562-99ae-eb55eb655a08","name":"Цезарь с креветкой"},{"uid":"239853394541","id":"320ce4c9-b2e5-4b95-a094-a45400358485","name":"Салат Греческий"},{"uid":"930107580241","id":"30f2c90d-78ab-4766-bcc3-25b41c9cc023","name":"Салат Сытный"},{"uid":"335697458321","id":"c0d658d6-2bfc-4e4e-b128-4e9ea07759e9","name":"Салат Нежность"}]
+        let goodsSoups = [{"uid":"601704694161","id":"37416a06-f9c4-4a3d-b138-327e7ea0eea3","name":"Суп Мисо"},{"uid":"129685101861","id":"74c62ee4-c74f-4f99-8f41-e8bc4e406c9a","name":"Сливочный суп с лососем"},{"uid":"379806300501","id":"41b5f32f-9011-458a-90fb-511ff8fcbafa","name":"Суп Мисо с лососем"},{"uid":"344339141891","id":"66e505ae-0e5a-4dd9-901f-b9f9a8fe3e1a","name":"Сливочный суп с креветкой"},{"uid":"715219592021","id":"f1783121-1654-400e-976f-04f8f18c2224","name":"Суп Кимчи с лососем"},{"uid":"366260481941","id":"dd717832-a3b4-4f0f-985c-853a03673b04","name":"Суп куриный с лапшой"},{"uid":"283511212991","id":"56f17e9d-7fed-4129-876e-d652653adfc6","name":"Суп Суимоно"},{"uid":"536293892161","id":"8e28a99c-62c4-4112-9039-d80278ad5e10","name":"Суп Кимчи"},{"uid":"762924901631","id":"d1f3677f-7b29-45ef-ba62-85db867dfa44","name":"Суп Кимчи с морепродуктами"},{"uid":"342169227631","id":"bb4393af-5cf4-4beb-9275-3aa523f1a0a1","name":"Том Ям"}]
+        
+        let discountProducts_HOT10 = [...goodsSnacks, ...goodsHot_dishes, ...goodsDesserts, ...goodsDrinks, ...goodsSalads, ...goodsSoups ]
         
         let handler = {
             set(target, prop, value){
@@ -104,14 +111,28 @@
 
         
 
-        function CheckingShare (){  // фильтрация товаров по принадлежности к акции
-            let forPromotion = tcart.products.filter(i => !notDiscount.map(i2 => i2.uid).includes(i.uid))
-            let notForPromotion = tcart.products.filter(i => notDiscount.map(i2 => i2.uid).includes(i.uid))
+        function CheckingShare_1 (x){  // фильтрация товаров по принадлежности к акции
+            let forPromotion = tcart.products.filter(i => !x.map(i2 => i2.uid).includes(i.uid))
+            let notForPromotion = tcart.products.filter(i => x.map(i2 => i2.uid).includes(i.uid))
             return {forPromotion, notForPromotion}
         } 
+        
+        function CheckingShare_2 (x){  // фильтрация товаров по принадлежности к акции
+            let forPromotion = tcart.products.filter(i => x.map(i2 => i2.uid).includes(i.uid))
+            let notForPromotion = tcart.products.filter(i => !x.map(i2 => i2.uid).includes(i.uid))
+            return {forPromotion, notForPromotion}
+        }  
+
+        async function applied_promocode (){
+            if (cartwin.promocode.promocode.toUpperCase() === "HAPPY" || "SAM10"){
+                await CheckingShare_1(notDiscountProducts_HAPPY_SAM10)
+            } else if(cartwin.promocode.promocode.toUpperCase() === "HOT10"){
+                await CheckingShare_2(discountProducts_HOT10)
+            }
+        }
 
         async function calculationDiscount(){
-            let result = await CheckingShare() 
+            let result = await applied_promocode() 
             let discountpercent = tcart.promocode.discountpercent
 
             let resultSum_forPromition = result.forPromotion.map(i => i.amount).reduce((sum, current) => sum + current, 0)
