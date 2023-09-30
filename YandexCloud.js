@@ -80,19 +80,7 @@ let discountProducts_initial_HAPPY_SAM10 = [
     } DiscountFun()
 
 
-    function calculationDiscount(){
-        let custom_discount_value
-        let total_cost
 
-        if(extendedParams[`payment[promocode]`].toUpperCase() === "HAPPY" || "SAM10"){
-            custom_discount_value = discountProducts_HAPPY_SAM10.includes(p.externalid) ? 0 : ((+p.price * +p.quantity) * discount/100)
-            total_cost = discountProducts_HAPPY_SAM10.includes(p.externalid) ? (+p.price * +p.quantity) : (+p.price * +p.quantity) - ((+p.price * +p.quantity) * discount/100)
-        } else if(extendedParams[`payment[promocode]`].toUpperCase() === "HOT10"){
-            custom_discount_value = discountProducts_HOT10.includes(p.externalid) ? ((+p.price * +p.quantity) * discount/100) : 0
-            total_cost = discountProducts_HOT10.includes(p.externalid) ? (+p.price * +p.quantity) - ((+p.price * +p.quantity) * discount/100) : (+p.price * +p.quantity)
-        }
-        return {custom_discount_value, total_cost}
-        }
 
 
 function generateUUID() { // Public Domain/MIT
@@ -143,7 +131,7 @@ module.exports.handler = async function (req, context) {
             body: 'Hello World!',
         };
     }
-    let buff = new Buffer(req.body, 'base64');
+    let buff = Buffer.from(req.body, 'base64');
     let text = buff.toString('utf-8');
     let parsedParams = querystring.parse(text);
     let extendedParams = extendParams(parsedParams)
@@ -152,6 +140,20 @@ console.log(JSON.stringify(extendedParams))
 let discount = extendedParams['payment[discountvalue]']
  ? Number(extendedParams['payment[discountvalue]'].replace('%', ''))
  : 0 ;
+
+ function calculationDiscount(externalid, price, quantity){
+    let custom_discount_value
+    let total_cost
+
+    if(extendedParams[`payment[promocode]`].toUpperCase() === "HAPPY" || "SAM10"){
+        custom_discount_value = discountProducts_HAPPY_SAM10.includes(externalid) ? 0 : ((+price * +quantity) * discount/100)
+        total_cost = discountProducts_HAPPY_SAM10.includes(externalid) ? (+price * +quantity) : (+price * +quantity) - ((+price * +quantity) * discount/100)
+    } else if(extendedParams[`payment[promocode]`].toUpperCase() === "HOT10"){
+        custom_discount_value = discountProducts_HOT10.includes(externalid) ? ((+price * +quantity) * discount/100) : 0
+        total_cost = discountProducts_HOT10.includes(externalid) ? (+price * +quantity) - ((+price * +quantity) * discount/100) : (+price * +quantity)
+    }
+    return {custom_discount_value, total_cost}
+    }
 
  function getTypeDelivery(){
     if(extendedParams['payment[delivery]']){
@@ -187,9 +189,9 @@ var post_data = JSON.stringify({
             product_id: p.externalid,
             quantity: p.quantity,
             custom_discount_type: 'rouble',
-            custom_discount_value: calculationDiscount().custom_discount_value,
+            custom_discount_value: calculationDiscount(p.externalid, p.price, p.quantity).custom_discount_value,
             price: +p.price,
-            total_cost: calculationDiscount().total_cost,
+            total_cost: calculationDiscount(p.externalid, p.price, p.quantity).total_cost,
         }
     }),
 
